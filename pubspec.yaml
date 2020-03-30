@@ -1,0 +1,36 @@
+name: stoccer
+description: A personal project
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  cupertino_icons: ^0.1.2
+  font_awesome_flutter: ^8.4.0
+  solid_bottom_sheet: ^0.1.9
+  fl_chart: ^0.8.2
+  syncfusion_flutter_charts: ^17.4.51
+  firebase_core: ^0.4.4+3
+  firebase_auth: ^0.15.5+3
+  cloud_firestore: ^0.13.4+2
+  modal_progress_hud: ^0.1.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+
+flutter:
+  uses-material-design: true
+
+  assets:
+   - images/
+   - images/club_logos/
+
