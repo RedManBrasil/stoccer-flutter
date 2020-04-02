@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:stoccer/TeamPage.dart';
-import 'ops/clubs_list.dart';
 import 'welcome_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+final _firestore = Firestore.instance;
 
 class StarterMenu extends StatelessWidget {
   static const String id = 'start';
+  final CollectionReference ref = null;
 
   @override
   Widget build(BuildContext context) {
@@ -23,26 +26,51 @@ class StarterMenu extends StatelessWidget {
         ],
         backgroundColor: Colors.green.shade400,
       ),
-      body: ListView.builder(
-        //constroi a lista
-        itemCount: clubs.length, //lista com o tamanho da array de clubes
-        itemBuilder: (context, index) {
-          return EachList(
-            clubs: clubs[index][0], //para cada lista voce tem o nome do clube
-            onTap: () {
-              //e a funcao do que acontece onTap
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => TeamPage(
-                    //onTap voce vai para a tela TeamPage() passando o index do time clicado
-                    clubIndex: index,
+      body: Column(
+        children: <Widget>[
+          StreamBuilder<QuerySnapshot>(
+            stream: _firestore.collection('teams').snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                final teams = snapshot.data.documents;
+                List<String> teamList = [];
+                for (var team in teams) {
+                  final teamName = team.data['name'];
+                  teamList.add(teamName);
+                }
+                return Expanded(
+                  child: ListView.builder(
+                    //constroi a lista
+                    itemCount: teamList
+                        .length, //lista com o tamanho da array de clubes
+                    itemBuilder: (context, index) {
+                      return EachList(
+                        clubs: teamList[
+                            index], //para cada lista voce tem o nome do clube
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => TeamPage(
+                                //onTap voce vai para a tela TeamPage() passando o index do time clicado
+                                clubCode: teamList[index],
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
                   ),
-                ),
-              );
+                );
+              } else {
+                //caso os dados ainda não chegaram, mostra uma barra de progressão para o user
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
             },
-          );
-        },
+          ),
+        ],
       ),
     );
   }
@@ -64,12 +92,13 @@ class EachList extends StatelessWidget {
           child: Row(
             children: <Widget>[
               CircleAvatar(
-                child: Text(clubs[0]),
+                child:
+                    Text(clubs[0]), //inicial do nome do time em forma de avatar
               ),
               Padding(
                 padding: EdgeInsets.only(right: 8.0),
               ),
-              Text(clubs),
+              Text(clubs), //nome do time
             ],
           ),
         ),

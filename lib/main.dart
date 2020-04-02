@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.white,
       ),
       home: MaterialApp(
-        initialRoute: WelcomeScreen
+        initialRoute: StarterMenu
             .id, //usa assim ao invés da string pq tem menos chanches de errar na hora de chamar a route e se perder no meio do codigo
         routes: {
           WelcomeScreen.id: (context) => WelcomeScreen(),
