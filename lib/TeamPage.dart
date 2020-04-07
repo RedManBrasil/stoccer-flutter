@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 import 'dart:math';
 import 'components/chart.dart';
 import 'components/getTeamData.dart';
+import 'components/getTeamOrders.dart';
 
 const kLargeButtonTextStyle = TextStyle(
   fontSize: 25.0,
@@ -33,6 +33,7 @@ class _TeamPageState extends State<TeamPage> {
   String countryClub = '';
   String codeClub = '';
   List<Color> colorsClub = [];
+  List<Text> buyOrders = [];
 
   List<dynamic> tempObject = [];
 
@@ -45,6 +46,21 @@ class _TeamPageState extends State<TeamPage> {
   void initState() {
     super.initState();
 
+    /// retrieve as ordens do pair em questão
+    List<Text> bOrders = [];
+
+    RetrieveOrders().getPairOrders('FLA').then((data) {
+      int i = 0;
+      while (i < data.length) {
+        bOrders.add(Text("₡${data[i]['price']}"));
+        i++;
+      }
+      setState(() {
+        buyOrders = bOrders;
+      });
+    });
+
+    ///retrieve dos dados do time para construir a pagina do time
     RetrieveTeam().getTeamData(clubCode).then((data) {
       tempObject = data;
       setState(() {
@@ -138,104 +154,88 @@ class _TeamPageState extends State<TeamPage> {
                         ),
                       ],
                     ),
-                    flex: 5,
+                    flex: 10,
                   ),
                   Expanded(
                     child: LineChartSample2(
                       primaryClubColor: colorsClub,
                     ),
-                    flex: 7,
+                    flex: 14,
                   ),
                   Expanded(
+                    flex: 8,
                     child: Padding(
                       padding: EdgeInsets.all(0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.greenAccent,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(18.0),
+                                ),
+                              ),
+                              child: FlatButton(
+                                onPressed: () {},
+                                child: Padding(
+                                  padding: EdgeInsets.all(20.0),
+                                  child: Text(
+                                    'BUY',
+                                    style: TextStyle(
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.redAccent,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(18.0),
+                                ),
+                              ),
+                              child: FlatButton(
+                                onPressed: () {},
+                                child: Padding(
+                                  padding: EdgeInsets.all(20.0),
+                                  child: Text(
+                                    'SELL',
+                                    style: TextStyle(
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                    flex: 4,
+                  ),
+                  Flexible(
+                    flex: 3,
+                    child: InkWell(
+                      onTap: () {},
+                      child: Text(
+                        'Orders Book',
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
                   )
                 ],
-              ),
-            ),
-            bottomSheet: SolidBottomSheet(
-              //a partir daqui começa o rodapé ##############################################
-              headerBar: Container(
-                color: colorsClub[0],
-                height: 50,
-                child: Center(
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              'Buy',
-                              style: kLargeButtonTextStyle,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              'Sell',
-                              style: kLargeButtonTextStyle,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              body: Container(
-                color: Colors.white,
-                child: Center(
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Directionality(
-                          textDirection: TextDirection.rtl,
-                          child: Container(
-                            color: Colors.green.shade100,
-                            child: GridView.count(
-                              padding: EdgeInsets.all(8.0),
-                              childAspectRatio: 6.0,
-                              crossAxisCount: 1,
-                              children: <Widget>[
-                                Text('₡229.99'),
-                                Text('₡229.23'),
-                                Text('₡227.08'),
-                                Text('₡227.07'),
-                                Text('₡222.47'),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      VerticalDivider(
-                        color: Colors.black,
-                      ),
-                      Expanded(
-                        child: Container(
-                          color: Colors.red.shade100,
-                          child: GridView.count(
-                            padding: EdgeInsets.all(8.0),
-                            childAspectRatio: 6.0,
-                            crossAxisCount: 1,
-                            children: <Widget>[
-                              Text('₡232.11'),
-                              Text('₡232.69'),
-                              Text('₡234.20'),
-                              Text('₡298.99'),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
               ),
             ),
           );
