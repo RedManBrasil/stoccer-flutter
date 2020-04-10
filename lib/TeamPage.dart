@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:stoccer/buy_screen.dart';
 import 'dart:math';
 import 'components/chart.dart';
 import 'components/getTeamData.dart';
@@ -170,7 +171,7 @@ class _TeamPageState extends State<TeamPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Padding(
-                            padding: const EdgeInsets.all(20.0),
+                            padding: EdgeInsets.all(20.0),
                             child: Container(
                               decoration: BoxDecoration(
                                 color: Colors.greenAccent,
@@ -179,7 +180,15 @@ class _TeamPageState extends State<TeamPage> {
                                 ),
                               ),
                               child: FlatButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => BuyScreen(
+                                                clubName: clubNameT,
+                                                colorsClub: colorsClub,
+                                              )));
+                                },
                                 child: Padding(
                                   padding: EdgeInsets.all(20.0),
                                   child: Text(
@@ -195,7 +204,7 @@ class _TeamPageState extends State<TeamPage> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(20.0),
+                            padding: EdgeInsets.all(20.0),
                             child: Container(
                               decoration: BoxDecoration(
                                 color: Colors.redAccent,

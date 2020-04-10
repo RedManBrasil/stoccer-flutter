@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stoccer/buy_screen.dart';
 import 'welcome_screen.dart';
 import 'login_screen.dart';
 import 'registration_screen.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
           RegistrationScreen.id: (context) => RegistrationScreen(),
           TeamPage.id: (context) => TeamPage(),
           StarterMenu.id: (context) => StarterMenu(),
+          BuyScreen.id: (context) => BuyScreen(),
         },
       ),
     );
