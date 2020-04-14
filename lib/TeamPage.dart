@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stoccer/buy_screen.dart';
+import 'package:stoccer/sell_screen.dart';
 import 'dart:math';
 import 'components/chart.dart';
 import 'components/getTeamData.dart';
@@ -32,7 +33,8 @@ class _TeamPageState extends State<TeamPage> {
   String clubNameT = '';
   String cityClub = '';
   String countryClub = '';
-  String codeClub = '';
+  String codeClub = ''; //código da imagem
+  String pairClub = ''; //código do pair
   List<Color> colorsClub = [];
   List<Text> buyOrders = [];
 
@@ -65,6 +67,7 @@ class _TeamPageState extends State<TeamPage> {
     RetrieveTeam().getTeamData(clubCode).then((data) {
       tempObject = data;
       setState(() {
+        pairClub = tempObject[0]['pair'];
         clubNameT = tempObject[0]['name'];
         cityClub = tempObject[0]['city'];
         countryClub = tempObject[0]['country'];
@@ -187,6 +190,7 @@ class _TeamPageState extends State<TeamPage> {
                                           builder: (context) => BuyScreen(
                                                 clubName: clubNameT,
                                                 colorsClub: colorsClub,
+                                                pairClub: pairClub,
                                               )));
                                 },
                                 child: Padding(
@@ -213,7 +217,16 @@ class _TeamPageState extends State<TeamPage> {
                                 ),
                               ),
                               child: FlatButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => SellScreen(
+                                                clubName: clubNameT,
+                                                colorsClub: colorsClub,
+                                                pairClub: pairClub,
+                                              )));
+                                },
                                 child: Padding(
                                   padding: EdgeInsets.all(20.0),
                                   child: Text(

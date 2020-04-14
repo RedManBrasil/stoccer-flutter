@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'components/placeOrder.dart';
 
-class BuyScreen extends StatefulWidget {
-  static const String id = 'BuyScreen';
+class SellScreen extends StatefulWidget {
+  static const String id = 'SellScreen';
 
-  BuyScreen({this.clubName, this.colorsClub, this.pairClub});
+  SellScreen({this.clubName, this.colorsClub, this.pairClub});
   final String clubName;
   final List<Color> colorsClub;
   final String pairClub;
 
   @override
-  _BuyScreenState createState() => _BuyScreenState(
+  _SellScreenState createState() => _SellScreenState(
       clubName: this.clubName, colorsClub: colorsClub, pairClub: pairClub);
 }
 
-class _BuyScreenState extends State<BuyScreen> {
-  _BuyScreenState(
+class _SellScreenState extends State<SellScreen> {
+  _SellScreenState(
       {@required this.clubName,
       @required this.colorsClub,
       @required this.pairClub});
@@ -120,7 +119,7 @@ class _BuyScreenState extends State<BuyScreen> {
             child: Center(
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.greenAccent,
+                  color: Colors.redAccent,
                   borderRadius: BorderRadius.all(
                     Radius.circular(18.0),
                   ),
@@ -131,22 +130,12 @@ class _BuyScreenState extends State<BuyScreen> {
                       setState(() {
                         errorHandling = 'Cannot be empty or negative';
                       });
-                    } else {
-                      String back = PlaceOrder().placeOrder(
-                          buy: true,
-                          amount: 2.31,
-                          price: 120.22,
-                          user: "PEDRAO",
-                          pair: pairClub);
-                      setState(() {
-                        errorHandling = back;
-                      });
                     }
                   },
                   child: Padding(
                     padding: EdgeInsets.all(20.0),
                     child: Text(
-                      'BUY',
+                      'SELL',
                       style: TextStyle(
                         color: Colors.black54,
                         fontWeight: FontWeight.bold,
